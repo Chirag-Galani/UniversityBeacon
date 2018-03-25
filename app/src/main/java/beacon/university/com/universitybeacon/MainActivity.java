@@ -41,23 +41,22 @@ public class MainActivity extends AppCompatActivity {
     int beacon_img;
     ListView lvBeaconList;
     Context context = this;
-
+    String API_KEY="INSERT_API_KEY_HERE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         list_of_beacons = new ArrayList<String>();
-        list_of_beacons.add("one");
-        list_of_beacons.add("two");
-        list_of_beacons.add("three");
+//        list_of_beacons.add("one");
+//        list_of_beacons.add("two");
+//        list_of_beacons.add("three");
         beacon_img = R.drawable.beacon_notif_img;
         tvBeaconCount = (TextView) findViewById(R.id.tvBeaconCount);
         tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
         lvBeaconList = (ListView) findViewById(R.id.lvBeaconList);
         btSearch = (Button) findViewById(R.id.btSearch);
-        lvBeaconList.setAdapter(new CustomAdapterBeaconList(context,list_of_beacons,beacon_img));
         //initializing sdk using API key
-        KontaktSDK.initialize("HfGOIwmtzGgivhSQqrcOdbocfxUwfiNJ");
+        KontaktSDK.initialize(API_KEY);
         proximityManager = ProximityManagerFactory.create(this);
         proximityManager.setIBeaconListener(createIBeaconListener());
         proximityManager.setEddystoneListener(createEddystoneListener());
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         return new SimpleIBeaconListener() {
             @Override
             public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
-                Log.i("Sample", "IBeacon discovered: " + ibeacon.toString());
+                Log.e("Sample", "IBeacon discovered: " + ibeacon.toString());
             }
         };
     }
@@ -108,9 +107,13 @@ public class MainActivity extends AppCompatActivity {
         return new SimpleEddystoneListener() {
             @Override
             public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-                Log.i("Sample", "Eddystone discovered: " + eddystone.toString());
+                Log.e("Sample", "Eddystone discovered: " + eddystone.toString());
+                Log.e("Sample", "namespace discovered: " + namespace.toString());
                 generate_notification();
-                Log.e("Error","Error");
+                list_of_beacons.add(eddystone.getUniqueId());
+                lvBeaconList.setAdapter(new CustomAdapterBeaconList(context,list_of_beacons,beacon_img));
+
+//                Log.e("Error","Error");
             }
         };
     }
