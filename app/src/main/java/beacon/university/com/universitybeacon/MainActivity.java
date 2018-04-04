@@ -13,12 +13,14 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerFactory;
 import com.kontakt.sdk.android.ble.manager.listeners.EddystoneListener;
 import com.kontakt.sdk.android.ble.manager.listeners.IBeaconListener;
+import com.kontakt.sdk.android.ble.manager.listeners.SpaceListener;
 import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleEddystoneListener;
 import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleIBeaconListener;
 import com.kontakt.sdk.android.common.KontaktSDK;
@@ -38,18 +40,19 @@ public class MainActivity extends AppCompatActivity {
     TextView tvBeaconCount;
     Button btSearch;
     ArrayList<String> list_of_beacons;
+    //unique beacon ids
+    ArrayList<String> list_of_beacons_ids;
     int beacon_img;
+    CustomAdapterBeaconList customAdapterBeaconList;
     ListView lvBeaconList;
     Context context = this;
-    String API_KEY="INSERT_API_KEY_HERE";
+    String API_KEY="INSERT_KEY_HERE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         list_of_beacons = new ArrayList<String>();
-//        list_of_beacons.add("one");
-//        list_of_beacons.add("two");
-//        list_of_beacons.add("three");
+        list_of_beacons_ids = new ArrayList<String>();
         beacon_img = R.drawable.beacon_notif_img;
         tvBeaconCount = (TextView) findViewById(R.id.tvBeaconCount);
         tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
@@ -57,10 +60,34 @@ public class MainActivity extends AppCompatActivity {
         btSearch = (Button) findViewById(R.id.btSearch);
         //initializing sdk using API key
         KontaktSDK.initialize(API_KEY);
+        customAdapterBeaconList = new CustomAdapterBeaconList(context,list_of_beacons,beacon_img);
+        lvBeaconList.setAdapter(customAdapterBeaconList);
         proximityManager = ProximityManagerFactory.create(this);
         proximityManager.setIBeaconListener(createIBeaconListener());
         proximityManager.setEddystoneListener(createEddystoneListener());
+        proximityManager.setSpaceListener(new SpaceListener() {
+            @Override
+            public void onRegionEntered(IBeaconRegion region) {
 
+            }
+
+            @Override
+            public void onRegionAbandoned(IBeaconRegion region) {
+
+            }
+
+            @Override
+            public void onNamespaceEntered(IEddystoneNamespace namespace) {
+
+            }
+
+            @Override
+            public void onNamespaceAbandoned(IEddystoneNamespace namespace) {
+                list_of_beacons_ids.clear();
+                list_of_beacons.clear();
+                customAdapterBeaconList.notifyDataSetChanged();
+            }
+        });
 
 
     }
@@ -109,10 +136,17 @@ public class MainActivity extends AppCompatActivity {
             public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
                 Log.e("Sample", "Eddystone discovered: " + eddystone.toString());
                 Log.e("Sample", "namespace discovered: " + namespace.toString());
-                generate_notification();
-                list_of_beacons.add(eddystone.getUniqueId());
-                lvBeaconList.setAdapter(new CustomAdapterBeaconList(context,list_of_beacons,beacon_img));
-
+                //list_of_beacons.add(eddystone.getUniqueId());
+                String beacon_name = eddystone.getName();
+                String beacon_id = eddystone.getUniqueId();
+                if (!list_of_beacons_ids.contains(beacon_id)){
+                    list_of_beacons_ids.add(beacon_id);
+                    generate_notification();
+                    list_of_beacons.add(beacon_name);
+//                    lvBeaconList.setAdapter(new CustomAdapterBeaconList(context,list_of_beacons,beacon_img));
+                    customAdapterBeaconList.notifyDataSetChanged();
+                    tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
+                }
 //                Log.e("Error","Error");
             }
         };
