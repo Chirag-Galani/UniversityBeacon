@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,30 +38,35 @@ public class MainActivity extends AppCompatActivity {
 
     //setting proximity manager : Keeps looking for beacon
     private ProximityManager proximityManager;
-    TextView tvBeaconCount;
-    Button btSearch;
+    private static TextView tvBeaconCount;
+    private static Button btSearch;
+    private static int att_img = R.drawable.attendance_icon;
+    private static int dis_img = R.drawable.discount_icon;
+    private static int info_img = R.drawable.information_icon;
     ArrayList<String> list_of_beacons;
     //unique beacon ids
     ArrayList<String> list_of_beacons_ids;
-    int beacon_img;
+    ArrayList<Integer> beacon_img;
+    ArrayList<String> beacon_urls;
     CustomAdapterBeaconList customAdapterBeaconList;
     ListView lvBeaconList;
     Context context = this;
-    String API_KEY="INSERT_KEY_HERE";
+    String API_KEY="INSERT_API_KEY";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         list_of_beacons = new ArrayList<String>();
         list_of_beacons_ids = new ArrayList<String>();
-        beacon_img = R.drawable.beacon_notif_img;
+        beacon_urls = new ArrayList<String>();
+        beacon_img = new ArrayList<Integer>();
         tvBeaconCount = (TextView) findViewById(R.id.tvBeaconCount);
         tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
         lvBeaconList = (ListView) findViewById(R.id.lvBeaconList);
         btSearch = (Button) findViewById(R.id.btSearch);
         //initializing sdk using API key
         KontaktSDK.initialize(API_KEY);
-        customAdapterBeaconList = new CustomAdapterBeaconList(context,list_of_beacons,beacon_img);
+        customAdapterBeaconList = new CustomAdapterBeaconList(context,list_of_beacons,beacon_img,beacon_urls);
         lvBeaconList.setAdapter(customAdapterBeaconList);
         proximityManager = ProximityManagerFactory.create(this);
         proximityManager.setIBeaconListener(createIBeaconListener());
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNamespaceAbandoned(IEddystoneNamespace namespace) {
                 list_of_beacons_ids.clear();
                 list_of_beacons.clear();
+                beacon_urls.clear();
                 customAdapterBeaconList.notifyDataSetChanged();
             }
         });
@@ -140,10 +147,22 @@ public class MainActivity extends AppCompatActivity {
                 String beacon_name = eddystone.getName();
                 String beacon_id = eddystone.getUniqueId();
                 if (!list_of_beacons_ids.contains(beacon_id)){
-                    list_of_beacons_ids.add(beacon_id);
                     generate_notification();
+                    list_of_beacons_ids.add(beacon_id);
                     list_of_beacons.add(beacon_name);
-//                    lvBeaconList.setAdapter(new CustomAdapterBeaconList(context,list_of_beacons,beacon_img));
+                    beacon_urls.add(eddystone.getUrl());
+                    String beacon_type = beacon_name.split(" ")[1];
+                    switch (beacon_type){
+                        case "RollCall" :
+                            beacon_img.add(att_img);
+                            break;
+                        case "Info" :
+                            beacon_img.add(info_img);
+                            break;
+                        case "Offer" :
+                            beacon_img.add(dis_img);
+                            break;
+                    }
                     customAdapterBeaconList.notifyDataSetChanged();
                     tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
                 }

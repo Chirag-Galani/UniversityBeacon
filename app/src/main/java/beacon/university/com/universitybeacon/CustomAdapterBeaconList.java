@@ -1,10 +1,12 @@
 package beacon.university.com.universitybeacon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,12 +21,14 @@ import java.util.ArrayList;
 public class CustomAdapterBeaconList extends BaseAdapter{
     Context context;
     ArrayList<String> beacon_info;
-    int image_id;
+    ArrayList<Integer> image_id;
+    ArrayList<String> beacon_urls;
     private static LayoutInflater inflater = null;
-    public CustomAdapterBeaconList(Context context, ArrayList<String> beacon_info, int image_id){
+    public CustomAdapterBeaconList(Context context, ArrayList<String> beacon_info, ArrayList<Integer> image_id, ArrayList<String> beacon_urls){
         this.context = context;
         this.beacon_info = beacon_info;
         this.image_id = image_id;
+        this.beacon_urls = beacon_urls;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -49,18 +53,21 @@ public class CustomAdapterBeaconList extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = new ViewHolder();
         View rowView;
         rowView = inflater.inflate(R.layout.custom_beacon_list,null);
         holder.tv = (TextView) rowView.findViewById(R.id.tvBeaconInfo);
         holder.img = (ImageView) rowView.findViewById(R.id.ivBeaconIcon);
         holder.tv.setText(beacon_info.get(position));
-        holder.img.setImageResource(image_id);
+        holder.img.setImageResource(image_id.get(position));
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Beacon Clicked",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context,AttendancePage.class);
+                intent.putExtra("URL",beacon_urls.get(position));
+                context.startActivity(intent);
             }
         });
         return rowView;
