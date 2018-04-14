@@ -65,7 +65,7 @@ public class CustomAdapterBeaconList extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Beacon Clicked",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context,AttendancePage.class);
+                Intent intent = new Intent(context,InformationPage.class);
                 intent.putExtra("URL",beacon_urls.get(position));
                 context.startActivity(intent);
             }

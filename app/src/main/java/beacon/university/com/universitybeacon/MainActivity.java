@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapterBeaconList customAdapterBeaconList;
     ListView lvBeaconList;
     Context context = this;
-    String API_KEY="INSERT_API_KEY";
+    String API_KEY="Insert Key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -27,7 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AttendancePage"></activity>
+        <activity android:name=".AttendancePage" />
+        <activity android:name=".InformationPage"></activity>
     </application>
 
 </manifest>
