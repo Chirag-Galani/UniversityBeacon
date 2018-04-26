@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">University Beacon</string>
+    <string name="iu_logo">IU Logo</string>
+    <string name="central_authentication_service">Central Authentication Service</string>
+    <string name="login_button_text">Login</string>
+    <string name="trouble_logging_in"><u>Trouble logging in?</u></string>
 </resources>
