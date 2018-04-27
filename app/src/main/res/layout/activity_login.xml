@@ -67,9 +67,10 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText3"
-            android:layout_marginTop="40dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
             android:background="@drawable/round_shape_button"
+            android:onClick="Login"
             android:text="@string/login_button_text"
             android:textColor="@android:color/white" />
 
