@@ -1,4 +1,4 @@
-package beacon.university.com.universitybeacon;
+package beacon.university.com.universitybeacon.activities;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,15 +7,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
@@ -31,9 +29,10 @@ import com.kontakt.sdk.android.common.profile.IBeaconRegion;
 import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
 import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+
+import beacon.university.com.universitybeacon.R;
+import beacon.university.com.universitybeacon.adapter.BeaconListAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> list_of_beacons_ids;
     ArrayList<Integer> beacon_img;
     ArrayList<String> beacon_urls;
-    CustomAdapterBeaconList customAdapterBeaconList;
+    BeaconListAdapter beaconListAdapter;
     ListView lvBeaconList;
     Context context = this;
     ProgressDialog progress;
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         list_of_beacons_ids = new ArrayList<String>();
         beacon_urls = new ArrayList<String>();
         beacon_img = new ArrayList<Integer>();
-        tvBeaconCount = (TextView) findViewById(R.id.tvBeaconCount);
+        tvBeaconCount = findViewById(R.id.tvBeaconCount);
         tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
         lvBeaconList = (ListView) findViewById(R.id.lvBeaconList);
 
@@ -73,9 +72,11 @@ public class MainActivity extends AppCompatActivity {
         progress.show();
 
         //initializing SDK using API key
+        lvBeaconList = findViewById(R.id.lvBeaconList);
+        //initializing sdk using API key
         KontaktSDK.initialize(API_KEY);
-        customAdapterBeaconList = new CustomAdapterBeaconList(context,list_of_beacons,beacon_img,beacon_urls);
-        lvBeaconList.setAdapter(customAdapterBeaconList);
+        beaconListAdapter = new BeaconListAdapter(context, list_of_beacons, beacon_img, beacon_urls);
+        lvBeaconList.setAdapter(beaconListAdapter);
         proximityManager = ProximityManagerFactory.create(this);
         proximityManager.setIBeaconListener(createIBeaconListener());
         proximityManager.setEddystoneListener(createEddystoneListener());
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 list_of_beacons_ids.clear();
                 list_of_beacons.clear();
                 beacon_urls.clear();
-                customAdapterBeaconList.notifyDataSetChanged();
+                beaconListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                     progress.dismiss();
-                    customAdapterBeaconList.notifyDataSetChanged();
+                    beaconListAdapter.notifyDataSetChanged();
                     tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
                 }
 //                Log.e("Error","Error");

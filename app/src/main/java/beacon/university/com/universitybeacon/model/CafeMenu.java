@@ -1,5 +1,6 @@
 package beacon.university.com.universitybeacon.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 
-public class Food_Court {
+public class CafeMenu {
 
     @SerializedName("station")
     @Expose
@@ -17,11 +18,12 @@ public class Food_Court {
     @Expose
     private String menu;
 
-    public void Food_Court(String station, String menu){
+    public void CafeMenu(String station, String menu) {
         this.station = station;
         this.menu = menu;
     }
 
+    @JsonProperty("station")
     public String getStation() {
         return station;
     }
@@ -30,6 +32,7 @@ public class Food_Court {
         this.station = station;
     }
 
+    @JsonProperty("menu")
     public String getMenu() {
         return menu;
     }
