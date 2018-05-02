@@ -4,4 +4,7 @@
     <string name="central_authentication_service">Central Authentication Service</string>
     <string name="login_button_text">Login</string>
     <string name="trouble_logging_in"><u>Trouble logging in?</u></string>
+    <string name="menu">Today\'s Menu</string>
+    <string name="cafeSchedule">Schedule</string>
+    <string name="notice">NOTICE</string>
 </resources>
