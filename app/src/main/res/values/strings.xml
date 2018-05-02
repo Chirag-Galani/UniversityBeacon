@@ -7,4 +7,6 @@
     <string name="menu">Today\'s Menu</string>
     <string name="cafeSchedule">Cafe Schedule</string>
     <string name="notice">NOTICE</string>
+    <string name="class_schedule">Class Schedule</string>
+    <string name="mark_attendance">Mark Attendance</string>
 </resources>

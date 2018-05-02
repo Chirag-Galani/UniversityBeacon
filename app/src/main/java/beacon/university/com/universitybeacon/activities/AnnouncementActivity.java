@@ -23,24 +23,25 @@ import java.util.Map;
 
 import beacon.university.com.universitybeacon.R;
 import beacon.university.com.universitybeacon.adapter.AnnouncementAdapter;
-import beacon.university.com.universitybeacon.adapter.CafeScheduleAdapter;
 import beacon.university.com.universitybeacon.model.Announcement;
 
 public class AnnouncementActivity extends AppCompatActivity {
 
-    CafeScheduleAdapter mAdapter;
+    String userEmail;
     private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
+        userEmail = getIntent().getStringExtra("USER_EMAIL");
         mRecyclerView = findViewById(R.id.recyclerViewNotice);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
+
         fetchNotice();
     }
 
@@ -80,7 +81,8 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("beacon_name", "gresham");
+                params.put("beacon_name", "announcement");
+                params.put("email_id", userEmail);
                 return params;
             }
         };

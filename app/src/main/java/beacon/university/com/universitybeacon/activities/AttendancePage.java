@@ -44,7 +44,7 @@ import static beacon.university.com.universitybeacon.app.Constants.MARK_ATTENDAN
 
 public class AttendancePage extends AppCompatActivity {
     String className;
-    String email = "randall@iu.edu";
+    String userEmail = "randall@iu.edu";
 //    String email="cgalani@iu.edu";
 
     String beaconName = "LH-1000";
@@ -65,6 +65,8 @@ public class AttendancePage extends AppCompatActivity {
         textViewClassInfoName = findViewById(R.id.textview_class_info_name);
         textViewClassInfoDept = findViewById(R.id.textview_class_info_dept);
         markAttendanceButton = findViewById(R.id.buttonMarkAttendance);
+
+        userEmail = getIntent().getStringExtra("USER_EMAIL");
 
 
         RecyclerView.LayoutManager mClassTimetableLayoutManager = new LinearLayoutManager(this);
@@ -361,11 +363,7 @@ public class AttendancePage extends AppCompatActivity {
         ) {
             @Override
             public Map<String, String> getHeaders() {
-//                return fetchHeader();
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("beacon_name", beaconName);
-                params.put("email_id", email);
-                return params;
+                return fetchHeader();
             }
         };
         queue.add(postRequest);
@@ -374,7 +372,8 @@ public class AttendancePage extends AppCompatActivity {
     private Map<String, String> fetchHeader() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("beacon_name", beaconName);
-        params.put("email_id", email);
+        params.put("email_id", userEmail);
+        Log.e("AA", "userEmail: " + userEmail);
         return params;
     }
 }

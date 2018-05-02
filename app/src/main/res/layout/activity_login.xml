@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="28dp"
             android:contentDescription="@string/iu_logo"
-            android:onClick="Attendance"
+            android:onClick="fillProfCredential"
             app:srcCompat="@drawable/trident_large" />
 
         <TextView
@@ -34,14 +34,13 @@
             android:layout_below="@id/imageViewLogo"
             android:layout_marginTop="40dp"
             android:text="@string/central_authentication_service"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:onClick="InformationPage"
             tools:shadowColor="@android:color/darker_gray" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/editTextEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewCIS"
@@ -51,26 +50,26 @@
             android:hint="Username"
             android:inputType="textPersonName"
             android:text="cgalani@iu.edu"
-            android:textColorHint="@android:color/black" />
+            android:textColorHint="@color/colorPrimaryDark" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/editTextPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editText2"
+            android:layout_below="@id/editTextEmail"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:ems="10"
             android:hint="Passphrase"
             android:inputType="textPassword"
             android:text="12345"
-            android:textColorHint="@android:color/black" />
+            android:textColorHint="@color/colorPrimaryDark" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/button"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editText3"
+            android:layout_below="@id/editTextPassword"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:background="@drawable/round_shape_button"

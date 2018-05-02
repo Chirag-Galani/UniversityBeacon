@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     tools:context="beacon.university.com.universitybeacon.activities.AttendancePage">
 
     <include
@@ -20,10 +21,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
-        android:background="@android:color/background_dark"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center_horizontal"
         android:padding="5dp"
-        android:text="@string/cafeSchedule"
+        android:text="@string/class_schedule"
         android:textColor="@android:color/background_light"
         android:textSize="36sp"
         android:textStyle="bold" />
@@ -36,7 +37,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:background="@android:color/background_dark"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:paddingBottom="15dp"
@@ -70,17 +71,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTimetable"
         android:scrollbars="vertical" />
-    <Button
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/buttonMarkAttendance"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_below="@id/editTextPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
         android:layout_marginTop="15dp"
+        android:background="@drawable/round_shape_button"
         android:onClick="markAttendanceButtonClick"
-        android:textSize="24sp"
-        android:text="Mark Attendance" />
+        android:text="@string/mark_attendance"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textview_class_info_name"
@@ -115,7 +120,7 @@
             android:layout_margin="10dp"
             android:layout_weight="0.5"
             android:text="Date"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -126,7 +131,7 @@
             android:layout_margin="10dp"
             android:layout_weight="0.5"
             android:text="Lecture Topic"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>

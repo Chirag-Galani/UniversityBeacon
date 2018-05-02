@@ -8,15 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import beacon.university.com.universitybeacon.R;
 import beacon.university.com.universitybeacon.activities.AnnouncementActivity;
 import beacon.university.com.universitybeacon.activities.AttendancePage;
-import beacon.university.com.universitybeacon.model.Announcement;
-import es.dmoral.toasty.Toasty;
-import beacon.university.com.universitybeacon.R;
 import beacon.university.com.universitybeacon.activities.CafeActivity;
 /**
  * Created by satendra on 3/25/2018.
@@ -27,13 +24,15 @@ public class BeaconListAdapter extends BaseAdapter {
     ArrayList<String> beacon_info;
     ArrayList<Integer> image_id;
     ArrayList<String> beacon_urls;
+    String userEmail;
     private static LayoutInflater inflater = null;
 
-    public BeaconListAdapter(Context context, ArrayList<String> beacon_info, ArrayList<Integer> image_id, ArrayList<String> beacon_urls) {
+    public BeaconListAdapter(Context context, ArrayList<String> beacon_info, ArrayList<Integer> image_id, ArrayList<String> beacon_urls, String userEmail) {
         this.context = context;
         this.beacon_info = beacon_info;
         this.image_id = image_id;
         this.beacon_urls = beacon_urls;
+        this.userEmail = userEmail;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -74,6 +73,7 @@ public class BeaconListAdapter extends BaseAdapter {
                 switch (beacon_name) {
                     case "ATT" :
                         Intent intent = new Intent(context,AttendancePage.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
                         intent.putExtra("URL",beacon_urls.get(position));
                         context.startActivity(intent);
                         break;
@@ -84,6 +84,7 @@ public class BeaconListAdapter extends BaseAdapter {
                         break;
                     case "INFO" :
                         Intent intentTwo = new Intent(context,AnnouncementActivity.class);
+                        intentTwo.putExtra("USER_EMAIL", userEmail);
                         intentTwo.putExtra("URL",beacon_urls.get(position));
                         context.startActivity(intentTwo);
                         break;

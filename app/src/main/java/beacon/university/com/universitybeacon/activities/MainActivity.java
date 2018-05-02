@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     Context context = this;
     ProgressDialog progress;
     String API_KEY="HfGOIwmtzGgivhSQqrcOdbocfxUwfiNJ";
+    String userEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
         beacon_img = new ArrayList<Integer>();
         tvBeaconCount = findViewById(R.id.tvBeaconCount);
         tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
-        lvBeaconList = (ListView) findViewById(R.id.lvBeaconList);
+        lvBeaconList = findViewById(R.id.lvBeaconList);
+
+        userEmail = getIntent().getStringExtra("USER_EMAIL");
 
         //setup for loading screen
         progress = new ProgressDialog(this);
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         lvBeaconList = findViewById(R.id.lvBeaconList);
         //initializing sdk using API key
         KontaktSDK.initialize(API_KEY);
-        beaconListAdapter = new BeaconListAdapter(context, list_of_beacons, beacon_img, beacon_urls);
+        beaconListAdapter = new BeaconListAdapter(context, list_of_beacons, beacon_img, beacon_urls, userEmail);
         lvBeaconList.setAdapter(beaconListAdapter);
         proximityManager = ProximityManagerFactory.create(this);
         proximityManager.setIBeaconListener(createIBeaconListener());
@@ -112,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         startScanning();
-        Log.i("Sample", "Scanning start");
     }
 
     @Override
@@ -150,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
         return new SimpleEddystoneListener() {
             @Override
             public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-                Log.e("Sample", "Eddystone discovered: " + eddystone.toString());
-                Log.e("Sample", "namespace discovered: " + namespace.toString());
+//                Log.e("Sample", "Eddystone discovered: " + eddystone.toString());
+//                Log.e("Sample", "namespace discovered: " + namespace.toString());
                 //list_of_beacons.add(eddystone.getUniqueId());
                 String beacon_name = eddystone.getName();
                 String beacon_id = eddystone.getUniqueId();
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                         case "INFO" :
                             beacon_img.add(info_img);
                             break;
-                        case "OFF" :
+                        case "CAFE":
                             beacon_img.add(dis_img);
                             break;
                     }
