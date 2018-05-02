@@ -3,6 +3,7 @@ package beacon.university.com.universitybeacon;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     //setting proximity manager : Keeps looking for beacon
     private ProximityManager proximityManager;
     private static TextView tvBeaconCount;
-    private static Button btSearch;
     private static int att_img = R.drawable.attendance_icon;
     private static int dis_img = R.drawable.discount_icon;
     private static int info_img = R.drawable.information_icon;
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapterBeaconList customAdapterBeaconList;
     ListView lvBeaconList;
     Context context = this;
-    String API_KEY="Insert Key";
+    ProgressDialog progress;
+    String API_KEY="HfGOIwmtzGgivhSQqrcOdbocfxUwfiNJ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +64,15 @@ public class MainActivity extends AppCompatActivity {
         tvBeaconCount = (TextView) findViewById(R.id.tvBeaconCount);
         tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
         lvBeaconList = (ListView) findViewById(R.id.lvBeaconList);
-        btSearch = (Button) findViewById(R.id.btSearch);
-        //initializing sdk using API key
+
+        //setup for loading screen
+        progress = new ProgressDialog(this);
+        progress.setTitle("Hold on !");
+        progress.setMessage("Searching for Beacons nearby...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
+        //initializing SDK using API key
         KontaktSDK.initialize(API_KEY);
         customAdapterBeaconList = new CustomAdapterBeaconList(context,list_of_beacons,beacon_img,beacon_urls);
         lvBeaconList.setAdapter(customAdapterBeaconList);
@@ -153,16 +161,17 @@ public class MainActivity extends AppCompatActivity {
                     beacon_urls.add(eddystone.getUrl());
                     String beacon_type = beacon_name.split(" ")[1];
                     switch (beacon_type){
-                        case "RollCall" :
+                        case "ATT" :
                             beacon_img.add(att_img);
                             break;
-                        case "Info" :
+                        case "INFO" :
                             beacon_img.add(info_img);
                             break;
-                        case "Offer" :
+                        case "OFF" :
                             beacon_img.add(dis_img);
                             break;
                     }
+                    progress.dismiss();
                     customAdapterBeaconList.notifyDataSetChanged();
                     tvBeaconCount.setText(Integer.toString(list_of_beacons.size()));
                 }

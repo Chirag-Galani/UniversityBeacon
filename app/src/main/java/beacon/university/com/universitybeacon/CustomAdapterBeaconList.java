@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * Created by satendra on 3/25/2018.
  */
@@ -64,10 +66,22 @@ public class CustomAdapterBeaconList extends BaseAdapter{
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"Beacon Clicked",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context,InformationPage.class);
-                intent.putExtra("URL",beacon_urls.get(position));
-                context.startActivity(intent);
+                //Get Beacon Type from Beacon Names and Start respective activities
+                String beacon_name = beacon_info.get(position).split(" ")[1];
+                switch (beacon_name) {
+                    case "ATT" :
+                        Toasty.info(context, "Attendance Beacon", Toast.LENGTH_SHORT, true).show();
+                        Intent intent = new Intent(context,AttendancePage.class);
+                        intent.putExtra("URL",beacon_urls.get(position));
+                        context.startActivity(intent);
+                        break;
+                    case "INFO" :
+                        Toasty.info(context, "Information Beacon", Toast.LENGTH_SHORT, true).show();
+                        Intent intentOne = new Intent(context,InformationPage.class);
+                        intentOne.putExtra("URL",beacon_urls.get(position));
+                        context.startActivity(intentOne);
+                        break;
+                }
             }
         });
         return rowView;

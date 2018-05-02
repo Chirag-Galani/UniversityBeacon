@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#afb42b</color>
+    <color name="colorPrimaryDark">#524c00</color>
     <color name="colorAccent">#FF4081</color>
     <color name="iu_login_background">#461615</color>
     <color name="white">#FFFF</color>
+    <color name="title_bar">#afb42b</color>
+    <color name="dark_title_bar">#524c00</color>
+    <color name="main_background">#e0e0e0</color>
 </resources>
